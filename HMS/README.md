@@ -71,11 +71,12 @@ treatments?
     * 1 = well above avg, 5 = well below average
 
 ### Goals and Objectives
-* How does a person's perception of mental health (ie: stigma) affect their mental health status?
+* ~~How does a person's perception of mental health (ie: stigma) affect their mental health status?~~
 * What is the probability that someone who doesn't sleep or exercise "a lot" and/or excessively uses the internet will experience symptoms of depression?
+* ~~Probability that someone who experiences suicidal ideation is depressed~~
+* ~~Probability that someone feels either lonely or depressed given that they don't feel a sense of belonging.~~
 * Percentage of depression by family's level of education
-* How does one's knowledge of mental health affect their stigma around mental health?
-* More?!?
+* 
 
 ### Skills I Hope to Improve
 * List/dictionary comprehensions and lambda functions
