@@ -5,6 +5,7 @@ import seaborn as sns
 import scipy.stats as stats
 from scipy.stats import pearsonr
 from scipy.stats import chi2_contingency
+import random
 hms = pd.read_csv('/Users/hudsonmitchell-pullman/Library/Mobile Documents/com~apple~CloudDocs/Desktop/Learning to Code/Codecademy/Final Portfolio Project/HMS/HMS_2023-2024_PUBLIC_instchars.csv', low_memory = False)
 
 
@@ -20,7 +21,7 @@ hms = hms[['educ_par1', 'educ_par2', 'gr_A', 'gr_B', 'gr_C', 'gr_D', 'gr_F', 'gr
 #print(hms.head())
 #print(hms.info())
 #print(hms.describe(include = 'all'))
-hms.columns = ['education_parent1', 'educ_parent2', 'grade_a', 'grade_b', 'grade_c', 'grade_d', 'grade_f', 'grade_none', 'grade_dk', 'belonging', 'mh_academic_impact', 'positiveMH', 'depression', 'suicide_ideation', 'exercise', 'internet_usage', 'pcv_mh_stigma', 'per_mh_stigma', 'perceived_need', 'perceived_mh_knowledge', 'lonely']
+hms.columns = ['education_parent1', 'education_parent2', 'grade_a', 'grade_b', 'grade_c', 'grade_d', 'grade_f', 'grade_none', 'grade_dk', 'belonging', 'mh_academic_impact', 'positiveMH', 'depression', 'suicide_ideation', 'exercise', 'internet_usage', 'pcv_mh_stigma', 'per_mh_stigma', 'perceived_need', 'perceived_mh_knowledge', 'lonely']
 # Sample syntax: df['First Season'] = np.where(df['First Season'] > 1990, 1, df['First Season'])
 hms[['grade_a', 'grade_b', 'grade_c', 'grade_d', 'grade_f', 'grade_none', 'grade_dk']] = hms[['grade_a', 'grade_b', 'grade_c', 'grade_d', 'grade_f', 'grade_none', 'grade_dk']].fillna(value = 0)
 hms.grade_b = np.where(hms.grade_b == 1, 2, hms.grade_b)
@@ -95,3 +96,27 @@ prob_lonely_depression_giv_belonging = prob_lonely_giv_belonging * prob_depressi
 prob_lonely_depression_and_belonging = prob_lonely_depression_giv_belonging * sum_prob_lonely_belonging
 prob_lonely_or_depression_given_belonging =  ((sum_prob_depression_belonging + sum_prob_lonely_belonging - prob_lonely_depression_and_belonging) / sum_prob_no_belonging)
 print('The probability of feeling lonely or depressed given a lack of a sense of belonging is {}%'.format(np.round(prob_lonely_or_depression_given_belonging * 100, 1)))
+
+### Continue analyzing parents' effect on education after exercise and internet
+
+hms['avg_parent_education'] = hms.apply(lambda row: ((row.education_parent1 + row.education_parent2) / 2), axis = 1)
+edu_par_std = hms.avg_parent_education.std()
+
+edu_par_mean = hms.avg_parent_education.mean()
+## Probability of having parents who don't have college degrees.
+print(stats.norm.cdf(4, edu_par_mean, edu_par_std))
+
+
+#print(hms.avg_parent_education.head(25))
+avg_par_edu_samp = np.random.choice(hms['avg_parent_education'], size = 25, replace = False)
+
+# Converting exercise and internet usage into numeric values
+
+print(hms.info())
+
+students = 104729
+zero_exercise = 0.267
+no_exercise_count = students * zero_exercise
+
+
+
