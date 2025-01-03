@@ -112,11 +112,31 @@ avg_par_edu_samp = np.random.choice(hms['avg_parent_education'], size = 25, repl
 
 # Converting exercise and internet usage into numeric values
 
-print(hms.info())
+#print(hms.info())
+
 
 students = 104729
+num_respondents_one = hms.exercise.value_counts().get(1,0)
 zero_exercise = 0.267
-no_exercise_count = students * zero_exercise
+no_exercise_count = int(num_respondents_one * zero_exercise)
+
+#print(num_respondents_one)
+#print(students)
+one_exercise_count = num_respondents_one - no_exercise_count
+#print(one_exercise_count)
+
+
+arr0 = [0] * no_exercise_count
+arr0 = np.array(arr0)
+print(arr0[:25])
+one_skewed = np.random.lognormal(2.3, 0.9, one_exercise_count)
+one_skewed = np.clip(one_skewed, 1, 59)
+combined_one = np.concatenate([arr0, one_skewed])
+plt.hist(combined_one, alpha = 0.7)
+plt.title('Expected Distribution of Exercise Minutes Under One Hour')
+plt.show()
+plt.clf()
+
 
 
 
