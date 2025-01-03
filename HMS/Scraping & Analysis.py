@@ -112,11 +112,74 @@ avg_par_edu_samp = np.random.choice(hms['avg_parent_education'], size = 25, repl
 
 # Converting exercise and internet usage into numeric values
 
-print(hms.info())
+#print(hms.info())
+
 
 students = 104729
+num_respondents_one = hms.exercise.value_counts().get(1,0)
 zero_exercise = 0.267
-no_exercise_count = students * zero_exercise
+no_exercise_count = int(num_respondents_one * zero_exercise)
+
+#print(num_respondents_one)
+#print(students)
+one_exercise_count = num_respondents_one - no_exercise_count
+#print(one_exercise_count)
+
+
+arr0 = [0] * no_exercise_count
+arr0 = np.array(arr0)
+#print(arr0[:25])
+one_skewed = np.random.lognormal(2.3, 0.9, one_exercise_count)
+one_skewed = np.clip(one_skewed, 1, 59)
+combined_one = np.concatenate([arr0, one_skewed])
+plt.hist(combined_one, alpha = 0.7)
+plt.title('Expected Distribution of Exercise Minutes Under One Hour')
+plt.show()
+plt.clf()
+
+num_respondents_two = hms.exercise.value_counts().get(2,0)
+two_skewed = np.random.triangular(60, 78, 119, num_respondents_two)
+plt.hist(two_skewed, alpha = 0.7)
+plt.title('Expected Distribution of Exercise Minutes Under Two Hours')
+plt.show()
+plt.clf()
+exercise_data_under_rec = np.concatenate([combined_one, two_skewed])
+#print(hms.exercise.value_counts())
+
+#print(hms.exercise.value_counts().sum())
+plt.hist(exercise_data_under_rec, alpha = 0.79)
+plt.title('Expected Distribution of Exercise Minutes Under Recommended Time (CDC)')
+plt.show()
+plt.clf()
+
+num_respondents_three = hms.exercise.value_counts().get(3,0)
+three_skewed = np.random.triangular(120, 136, 179, num_respondents_three)
+
+num_respondents_four = hms.exercise.value_counts().get(4,0)
+four_skewed = np.random.triangular(180, 196, 239, num_respondents_four)
+
+num_respondents_five = hms.exercise.value_counts().get(5,0)
+five_skewed = np.random.triangular(240, 256, 309, num_respondents_five)
+
+num_respondents_six = hms.exercise.value_counts().get(6,0)
+six_skewed = np.random.triangular(310, 328, 1080, num_respondents_six)
+
+exercise_data_no_mean = np.concatenate([one_skewed, two_skewed, four_skewed, five_skewed, six_skewed])
+data = {'exercise_minutes': exercise_data_no_mean}
+exercise_df = pd.DataFrame(data)
+print(exercise_df.head())
+## Use boxplot
+sns.boxplot(x = 'exercise_minutes', data = exercise_df)
+plt.show()
+plt.clf()
+
+exercise_depression_crosstab = pd.crosstab(hms.exercise, hms.depression)
+chi2_exerc_dep, x, y, expected_exerc_dep = chi2_contingency(exercise_depression_crosstab)
+print(chi2_exerc_dep)
+print(np.round(np.sqrt(chi2_exerc_dep / (104729 * 5)), 2))
+
+
+
 
 
 
