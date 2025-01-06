@@ -8,8 +8,8 @@ from scipy.stats import chi2_contingency
 import random
 hms = pd.read_csv('/Users/hudsonmitchell-pullman/Library/Mobile Documents/com~apple~CloudDocs/Desktop/Learning to Code/Codecademy/Final Portfolio Project/HMS/HMS_2023-2024_PUBLIC_instchars.csv', low_memory = False)
 
-
 # Set display options for all columns and rows
+#ChatGPT syntax
 pd.set_option('display.max_columns', None)  # Show all columns
 pd.set_option('display.max_rows', None)  # Show all rows (optional)
 pd.set_option('display.width', None)  # Adjust the width of the display to avoid wrapping
@@ -39,6 +39,7 @@ print(hms.head(28))
 
 #print('The pearson correlation coefficient between academic_success and positiveMH is ', define)
 #print('The pearson correlation coefficient between academic_success and depression is ', define_2)
+
 ## Analyze how an openness or reduction in stigma is associated with mental health status
 crosstab1 = pd.crosstab(hms['positiveMH'], hms['academic_success'])
 chi2, pval, dof, expected1 = chi2_contingency(crosstab1)
@@ -69,14 +70,13 @@ chi2_5, pval, dof, expected5 = chi2_contingency(crosstab5)
 print(expected5)
 print(crosstab5)
 print('The chi-square is ', np.round(chi2_5, 2))
-
+### Cramer V is basically pearson for categorical data (>0.1 indicates an association)
 print('The Cramer V is ', np.round(np.sqrt(chi2_5 / (104729 * 2)), 2))
 
 ### Probability of being depressed given suicidal thoughts
 dep_sui = pd.crosstab(index = hms.depression, columns = hms.suicide_ideation, margins = True)
-print(dep_sui)
-print(dep_sui.iloc[2, 3] / dep_sui.iloc[3, 3])
-
+#print(dep_sui)
+#print(dep_sui.iloc[2, 3] / dep_sui.iloc[3, 3])
 
 prob_dep_given_sui = dep_sui.iloc[2, 2] / dep_sui.iloc[3, 2]
 print('The probability of feeling depressed given having suicidal ideations is {}%'.format(prob_dep_given_sui * 100))
@@ -99,7 +99,7 @@ print('The probability of feeling lonely or depressed given a lack of a sense of
 
 ### Continue analyzing parents' effect on education after exercise and internet
 
-hms['avg_parent_education'] = hms.apply(lambda row: ((row.education_parent1 + row.education_parent2) / 2), axis = 1)
+hms['avg_parent_education'] = hms.apply(lambda row: ((row.education_parent1 + row.education_parent2) / 2 if row.education_parent1 or row.education_parent2 != 8 else row.education_parent2 if row.education_parent1 == 8 else row.education_parent1 if row.education_parent2 == 8 else 0), axis = 1)
 edu_par_std = hms.avg_parent_education.std()
 
 edu_par_mean = hms.avg_parent_education.mean()
@@ -110,7 +110,18 @@ print(stats.norm.cdf(4, edu_par_mean, edu_par_std))
 #print(hms.avg_parent_education.head(25))
 avg_par_edu_samp = np.random.choice(hms['avg_parent_education'], size = 25, replace = False)
 
-# Converting exercise and internet usage into numeric values
+edu_dep_crosstab = pd.crosstab(hms.depression, hms.avg_parent_education)
+chi2_edu_dep, x, y, expected_edu_dep = chi2_contingency(edu_dep_crosstab)
+print(chi2_edu_dep)
+print(np.round(np.sqrt(chi2_edu_dep / (104729 * 8)), 2))
+plt.scatter(hms.avg_parent_education, y = hms.depression)
+plt.show()
+plt.clf()
+
+plt.scatter(y = hms.avg_parent_education, x = hms.exercise)
+plt.show()
+plt.clf()
+# Converting exercise  into numeric values
 
 #print(hms.info())
 

@@ -71,10 +71,10 @@ treatments?
     * 1 = well above avg, 5 = well below average
 
 ### Goals and Objectives
-* ~~How does a person's perception of mental health (ie: stigma) affect their mental health status?~~
-* What is the probability that someone who doesn't sleep or exercise "a lot" and/or excessively uses the internet will experience symptoms of depression?
-* ~~Probability that someone who experiences suicidal ideation is depressed~~
-* ~~Probability that someone feels either lonely or depressed given that they don't feel a sense of belonging.~~
+* How does a person's perception of mental health (ie: stigma) affect their mental health status?
+* What is correlation between exercise and depression?
+* Probability that someone who experiences suicidal ideation is depressed
+* Probability that someone feels either lonely or depressed given that they don't feel a sense of belonging.
 * Percentage of depression by family's level of education
 * 
 
@@ -82,3 +82,11 @@ treatments?
 * List/dictionary comprehensions and lambda functions
 * Different methods of EDA
 * Probabilities
+
+###### Side note!
+I tried to use existing statistics and studies to generate random exercise minute values and plot them, however, I don't know how to do so while mapping each value to its respondent, so the data isn't very helpful.
+
+###### What I would do differently if I administered the survey...
+I'd include open answer responses (ie; how many minutes per week do you exercise, how many minutes do you socialize, etc.)
+
+## Feel free to leave any suggestions! This is my first ever final portfolio project.
